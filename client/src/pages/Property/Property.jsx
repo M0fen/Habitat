@@ -1,26 +1,25 @@
-import React, { useState,useContext } from 'react';
-import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
-import { getProperty, removeBooking } from '../../utils/api';
-import { PuffLoader } from 'react-spinners';
-import { AiFillHeart, AiTwotoneCar } from 'react-icons/ai';
-import './Property.css';
-import { FaShower } from 'react-icons/fa';
-import { MdLocationPin, MdMeetingRoom } from 'react-icons/md';
-import Map from '../../components/Map/Map';
-import useAuthCheck from '../../hooks/useAuthCheck';
-import { useAuth0 } from '@auth0/auth0-react';
-import BookingModal from '../../components/BookingModal/BookingModal';
-import UserDetailContext from '../../context/UserDetailContext.js';
-import { Button } from '@mantine/core';
-import { toast } from 'react-toastify';
-import { useMutation } from 'react-query';
+import React, { useContext, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
+import { getProperty, removeBooking } from "../../utils/api";
+import { PuffLoader } from "react-spinners";
+import "./Property.css";
 
-
+import { FaShower } from "react-icons/fa";
+import { AiTwotoneCar } from "react-icons/ai";
+import { MdLocationPin, MdMeetingRoom } from "react-icons/md";
+import Map from "../../components/Map/Map";
+import useAuthCheck from "../../hooks/useAuthCheck";
+import { useAuth0 } from "@auth0/auth0-react";
+import BookingModal from "../../components/BookingModal/BookingModal";
+import UserDetailContext from "../../context/UserDetailContext.js";
+import { Button } from "@mantine/core";
+import { toast } from "react-toastify";
+import Heart from "../../components/Heart/Heart";
 const Property = () => {
   const { pathname } = useLocation();
-  const id = pathname.split('/').slice(-1)[0];
-  const { data, isLoading, isError } = useQuery(['resd', id], () =>
+  const id = pathname.split("/").slice(-1)[0];
+  const { data, isLoading, isError } = useQuery(["resd", id], () =>
     getProperty(id)
   );
 
@@ -41,7 +40,7 @@ const Property = () => {
         bookings: prev.bookings.filter((booking) => booking?.id !== id),
       }));
 
-      toast.success('Agenda cancelada', { position: 'bottom-right' });
+      toast.success("Booking cancelled", { position: "bottom-right" });
     },
   });
 
@@ -59,7 +58,7 @@ const Property = () => {
     return (
       <div className="wrapper">
         <div className="flexCenter paddings">
-          <span>Error</span>
+          <span>Error while fetching the property details</span>
         </div>
       </div>
     );
@@ -68,9 +67,11 @@ const Property = () => {
   return (
     <div className="wrapper">
       <div className="flexColStart paddings innerWidth property-container">
+        {/* like button */}
         <div className="like">
-          <AiFillHeart size={24} color="white" />
+          <Heart id={id}/>
         </div>
+
         {/* image */}
         <img src={data?.image} alt="home image" />
 
@@ -78,9 +79,9 @@ const Property = () => {
           {/* left */}
           <div className="flexColStart left">
             {/* head */}
-            <div className="flexStart head" style={{ flexDirection: 'column' }}>
+            <div className="flexStart head">
               <span className="primaryText">{data?.title}</span>
-              <span className="orangeText" style={{ fontSize: '1.5rem' }}>
+              <span className="orangeText" style={{ fontSize: "1.5rem" }}>
                 $ {data?.price}
               </span>
             </div>
@@ -108,16 +109,18 @@ const Property = () => {
 
             {/* description */}
 
-            <span className="secondaryText" style={{ textAlign: 'justify' }}>
+            <span className="secondaryText" style={{ textAlign: "justify" }}>
               {data?.description}
             </span>
 
             {/* address */}
 
-            <div className="flexStart" style={{ gap: '1rem' }}>
+            <div className="flexStart" style={{ gap: "1rem" }}>
               <MdLocationPin size={25} />
               <span className="secondaryText">
-                {data?.address} {data?.city} {data?.country}
+                {data?.address}{" "}
+                {data?.city}{" "}
+                {data?.country}
               </span>
             </div>
 
@@ -126,15 +129,15 @@ const Property = () => {
               <>
                 <Button
                   variant="outline"
-                  w={'100%'}
+                  w={"100%"}
                   color="red"
                   onClick={() => cancelBooking()}
                   disabled={cancelling}
                 >
-                  <span>Cancelar visita</span>
+                  <span>Cancel booking</span>
                 </Button>
                 <span>
-                  Ya tienes una visita para esta fecha{' '}
+                  Your visit already booked for date{" "}
                   {bookings?.filter((booking) => booking?.id === id)[0].date}
                 </span>
               </>
@@ -145,7 +148,7 @@ const Property = () => {
                   validateLogin() && setModalOpened(true);
                 }}
               >
-               Agenda tu visita  
+                Book your visit
               </button>
             )}
 
@@ -157,12 +160,12 @@ const Property = () => {
             />
           </div>
 
-          {/*right side*/}
+          {/* right side */}
           <div className="map">
             <Map
               address={data?.address}
               city={data?.city}
-              country={data.country}
+              country={data?.country}
             />
           </div>
         </div>

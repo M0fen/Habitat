@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="flexColStart f-left">
           <img src="./logo2.png" alt="" width={120} />
           <span className="secondaryText">
-            Pugbertoliebers
+            Hay que pensar un Footer bien cabrón
           </span>
         </div>
 

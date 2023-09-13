@@ -72,7 +72,7 @@ export const bookVisit = async (date, propertyId, email, token) => {
       }
     );
   } catch (error) {
-    toast.error("Something went wrong, Please try again");
+    toast.error("Algo salió mal, Porfavor intenta de nuevo");
     throw error;
   }
 };
@@ -91,8 +91,97 @@ export const removeBooking = async (id, email, token) => {
       }
     );
   } catch (error) {
-    toast.error("Something went wrong, Please try again");
+    toast.error("Algo salió mal, Porfavor intenta de nuevo");
 
     throw error;
   }
 };
+
+export const toFav = async (id, email, token) => {
+  try {
+    await api.post(
+      `/user/toFav/${id}`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (e) {
+    throw e;
+  }
+};
+
+
+
+export const getAllFav = async (email, token) => {
+  if(!token) return 
+  try{
+
+    const res = await api.post(
+      `/user/allFav`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+      
+    return res.data["favResidenciesID"]
+
+  }catch(e)
+  {
+    toast.error("Algo salió mal...");
+    throw e
+  }
+} 
+
+export const getAllBookings = async (email, token) => {
+  
+  if(!token) return 
+  try {
+    const res = await api.post(
+      `/user/allBookings`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data["bookedVisits"];
+
+    
+  } catch (error) {
+    toast.error("Algo salió mal ");
+    throw error
+  }
+}
+
+export const createResidency = async (data, token) => {
+  console.log(data)
+  try{
+    const res = await api.post(
+      `/residency/create`,
+      {
+        data
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+  }catch(error)
+  {
+    throw error
+  }
+}
