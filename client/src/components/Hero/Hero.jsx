@@ -24,7 +24,7 @@ const Hero = () => {
             </motion.h1>
           </div>
           <div className="flexColStart secondaryText flexhero-des">
-            <span>Encuentra una gran cantidad de propiedades fácilmente</span>
+            <span>Encuentra una gran cantidad de propiedades fácilmente  </span>
             <span>
               Olvida todas las dificultades que conlleva buscar propiedad
             </span>
